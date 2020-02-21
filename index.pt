@@ -1,0 +1,101 @@
+<tal:index>
+  <section id="slides">
+    <div class="slide">
+      <img src="slides/fran_poka.jpg" />
+      <h3><a href="poka.html">Spectacle: Poka</a></h3>
+    </div>
+    <div class="slide">
+      <img src="slides/fer_autour_cafe.jpg" />
+      <h3>Spectacle : Fer autour d'un café</h3>
+    </div>
+    <div class="slide">
+      <img src="slides/img_mountains_wide.jpg" />
+      <h3>Du texte 3</h3>
+    </div>
+
+    <nav class="sliders">
+      <button class="dot" onclick="currentDiv(1)">1</button>
+      <button class="dot" onclick="currentDiv(2)">2</button>
+      <button class="dot" onclick="currentDiv(3)">3</button>
+    </nav>
+  </section>
+
+  <section>
+    <h2>La compagnie Arkivi blablabla</h2>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing
+    elit. Nunc sed ligula hendrerit ante aliquam porta. Morbi non
+    interdum augue. Interdum et malesuada fames ac ante ipsum
+    primis in faucibus. Donec in porttitor elit. Donec sit amet
+    ultrices lacus. Proin odio nibh, volutpat ut consectetur ut,
+    tincidunt non nisi. Curabitur nec eros eu justo dignissim
+    dignissim. Vestibulum ante ipsum primis in faucibus orci
+    luctus et ultrices posuere cubilia Curae; Sed risus magna,
+    facilisis vitae est vel, eleifend fermentum dui. Etiam id arcu
+    eros. Suspendisse potenti. Nullam ut enim mi. Sed ullamcorper
+    dui eget mauris porta, a molestie nisl consectetur. Donec
+    malesuada et eros vitae ultrices. Donec at placerat dolor, ut
+    venenatis felis.</p>
+  </section>
+
+  <article class="cards">
+    <section>
+      <h3>truc</h3>
+      <p>
+        Tu cliques ici
+      </p>
+    </section>
+
+    <section>
+      <h3>machin</h3>
+      <p>
+        Tu cliques là
+      </p>
+    </section>
+
+    <section>
+      <h3>bidule</h3>
+      <p>
+        Ou encore ici
+      </p>
+    </section>
+  </article>
+  <script>
+    var slideIndex = 1;
+    var carousel = null;
+
+    function plusDivs(n) {
+    showDivs(slideIndex += n);
+    }
+
+    function currentDiv(n) {
+        clearTimeout(carousel);
+        showDivs(slideIndex = n);
+        }
+
+        function showDivs(n, direct) {
+        var i;
+        var x = document.getElementsByClassName("slide");
+        var dots = document.getElementsByClassName("dot");
+
+        if (n > x.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = x.length};
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+        x[slideIndex-1].style.display = "block";
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        dots[slideIndex-1].className += " active";
+        carousel = setTimeout(slides, 3000);
+       }
+
+       function slides() {
+           plusDivs(1);
+       }
+
+       slides();
+    </script>
+
+</tal:index>

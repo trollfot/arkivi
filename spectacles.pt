@@ -1,0 +1,44 @@
+<tal:spectales>
+  <h1 class="main-title">Spectacles</h1>
+  <article class="cards">
+    <section class="spectacle">
+      <h3>Poka</h3>
+      <a class="discover" href="poka.html">
+        <figure class="caption">
+          <img src="poka/poka_card.png" alt="Poka" />
+          <figcaption class="caption-text">
+            Un décor de verdure, du linge étendu qui sèche sur un fil.
+            Poka s'exprime à sa façon, dans un langage étrange, inconnu
+            mais harmonieux. A la recherche d’un morceau de tissu pour
+            compléter son doudou, il est arrivé par hasard sur ce
+            lieu...
+          </figcaption>
+        </figure>
+      </a>
+    </section>
+
+    <section class="spectacle">
+      <h3>Fer autour d'un café</h3>
+      <a class="discover" href="fer_autour_cafe.html">
+        <figure class="caption">
+          <img src="FerAutourDunCafe.jpg" alt="Fer autour d'un café" />
+          <figcaption class="caption-text">
+            qqfvùpvfùnsd vknsdfv mlkdfnv mdlfvn oivndvn dsvndsfvondsfvnds
+          </figcaption>
+        </figure>
+      </a>
+    </section>
+
+    <section class="spectacle">
+      <h3>Maman</h3>
+      <a class="discover" href="maman.html">
+        <figure class="caption">
+          <img src="maman_card.png" alt="Maman" />
+          <figcaption class="caption-text">
+            podsgfhpkorpothfdml fdgs kmds mfdgldf ldsg kdsflmsdml
+          </figcaption>
+        </figure>
+      </a>
+    </section>
+  </article>
+</tal:spectales>

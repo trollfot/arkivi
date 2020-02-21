@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="arkivi.css" />
+    <title>Compagnie Arkivi</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet"/>
+  </head>
+  <body>
+    <main>
+
+      <header>
+        <h1 id="arkivi-title">Compagnie ARKIVI</h1>
+        <img src="logo.png" alt="Arkivi" title="Compagnie Arkivi" />
+      </header>
+
+      <nav id="main-navigation">
+        <ul>
+          <li class="active"><a>Accueil</a></li>
+          <li><a href="crea.html">Spectacles</a></li>
+          <li><a>Tournée</a></li>
+          <li><a>L'équipe</a></li>
+          <li><a>Contact</a></li>
+        </ul>
+      </nav>
+
+      <tal:content replace="structure content" />
+
+      <footer>
+        <nav>
+          <ul>
+            <li>
+              Mentions légales
+            </li>
+            <li>
+              Politique de confidentialité
+            </li>
+            <li>
+              Politique des cookies
+            </li>
+            <li>
+              Plan du site
+            </li>
+          </ul>
+        </nav>
+      </footer>
+
+    </main>
+  </body>
+</html>
