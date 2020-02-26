@@ -1,15 +1,15 @@
 <tal:index>
   <section id="slides">
     <div class="slide">
-      <img src="slides/fran_poka.jpg" />
+      <img src="http://trollfot.org/arkivi/slides/fran_poka.jpg" />
       <h3><a href="poka.html">Spectacle: Poka</a></h3>
     </div>
     <div class="slide">
-      <img src="slides/fer_autour_cafe.jpg" />
+      <img src="http://trollfot.org/arkivi/slides/fer_autour_cafe.jpg" />
       <h3>Spectacle : Fer autour d'un café</h3>
     </div>
     <div class="slide">
-      <img src="slides/img_mountains_wide.jpg" />
+      <img src="http://trollfot.org/arkivi/slides/img_mountains_wide.jpg" />
       <h3>Du texte 3</h3>
     </div>
 

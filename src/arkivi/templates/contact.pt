@@ -1,0 +1,7 @@
+<div>
+  <form method="POST" tal:condition="sent is False">
+    <textarea name="message"></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+  <h2 tal:condition="sent is True">Merci !</h2>
+</div>

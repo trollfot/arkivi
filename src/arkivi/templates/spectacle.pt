@@ -3,7 +3,7 @@
   <article class="spectacle">
     <header>
       <h1 class="main-title" tal:content="spectacle" />
-      <img src="poka_band.jpg" />
+      <img src="http://trollfot.org/arkivi/slides/poka_band.jpg" />
     </header>
 
     <section class="about">
@@ -76,37 +76,37 @@
       </div>
     </aside>
     <section class="thumbnails">
-      <a href="poka/antelope.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/antelope.webp"
          onclick="return showModal(this);">
-        <img src="poka/antelope.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/antelope.webp" />
       </a>
-      <a href="poka/bio.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/bio.webp"
          onclick="return showModal(this);">
-        <img src="poka/bio.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/bio.webp" />
       </a>
-      <a href="poka/butterfly.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/butterfly.webp"
          onclick="return showModal(this);">
-        <img src="poka/butterfly.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/butterfly.webp" />
       </a>
-      <a href="poka/castle.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/castle.webp"
          onclick="return showModal(this);">
-        <img src="poka/castle.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/castle.webp" />
       </a>
-      <a href="poka/coffee.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/coffee.webp"
          onclick="return showModal(this);">
-        <img src="poka/coffee.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/coffee.webp" />
       </a>
-      <a href="poka/ice-cream.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/ice-cream.webp"
          onclick="return showModal(this);">
-        <img src="poka/ice-cream.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/ice-cream.webp" />
       </a>
-      <a href="poka/lighthouse.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/lighthouse.webp"
          onclick="return showModal(this);">
-        <img src="poka/lighthouse.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/lighthouse.webp" />
       </a>
-      <a href="poka/yoga.webp"
+      <a href="http://trollfot.org/arkivi/slides/poka/yoga.webp"
          onclick="return showModal(this);">
-        <img src="poka/yoga.webp" />
+        <img src="http://trollfot.org/arkivi/slides/poka/yoga.webp" />
       </a>
     </section>
     <script>

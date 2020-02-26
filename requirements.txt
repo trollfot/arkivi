@@ -2,3 +2,4 @@ chameleon
 wrapt
 bjoern
 -e git+git@github.com:Treegital/horseman.git#egg=horseman
+-e .

@@ -2,25 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="arkivi.css" />
+    <link rel="stylesheet" href="http://trollfot.org/arkivi/arkivi.css" />
     <title>Compagnie Arkivi</title>
-    <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
   </head>
   <body>
     <main>
 
       <header>
         <h1 id="arkivi-title">Compagnie ARKIVI</h1>
-        <img src="logo.png" alt="Arkivi" title="Compagnie Arkivi" />
+        <img src="http://trollfot.org/arkivi/logo.png"
+             alt="Arkivi" title="Compagnie Arkivi" />
       </header>
 
       <nav id="main-navigation">
         <ul>
-          <li class="active"><a>Accueil</a></li>
-          <li><a href="crea.html">Spectacles</a></li>
-          <li><a>Tournée</a></li>
-          <li><a>L'équipe</a></li>
-          <li><a>Contact</a></li>
+          <li tal:attributes="class path == '/' and 'active' or ''">
+            <a href="/">Accueil</a>
+          </li>
+          <li tal:repeat="entry menu"
+              tal:attributes="class path.startswith(entry[1]) and 'active' or ''">
+            <a tal:content="entry[0]"
+               tal:attributes="href entry[1]" />
+          </li>
         </ul>
       </nav>
 
