@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-from functools import wraps
 from jwcrypto import jwk
 from horseman.response import Response
 from cromlech.jwt.components import TokenException, JWTHandler, JWTService
@@ -25,24 +24,23 @@ def make_jwt_service(key, TTL=600):
     return JWTService(key, JWTHandler, lifetime=TTL)
 
 
-def protected(jwt_service):
+def jwt_protection(app, excludes=None):
 
     unauthorized = Response.create(401)
 
-    def jwt_protection(wrapped):
-        @wraps(wrapped)
-        def check_token(environ, start_response):
-            auth = environ.get('HTTP_AUTHORIZATION')
-            if auth:
-                authtype, token = auth.split(' ', 1)
-                if authtype.lower() == 'bearer':
-                    try:
-                        payload = jwt_service.check_token(token)
-                    except (TokenException, ValueError) as err:
-                        payload = None
-                    if payload is not None:
-                        return wrapped(environ, start_response)
-            return unauthorized(environ, start_response)
-        return check_token
+    def check_token(environ, start_response):
+        if excludes and environ['PATH_INFO'] in excludes:
+            return app(environ, start_response)
+        auth = environ.get('HTTP_AUTHORIZATION')
+        if auth:
+            authtype, token = auth.split(' ', 1)
+            if authtype.lower() == 'bearer':
+                try:
+                    payload = app.jwt_service.check_token(token)
+                except (TokenException, ValueError) as err:
+                    payload = None
+                if payload is not None:
+                    return app(environ, start_response)
+        return unauthorized(environ, start_response)
 
-    return jwt_protection
+    return check_token

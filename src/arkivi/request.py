@@ -7,11 +7,11 @@ class Request(Overhead):
         'app', 'db', 'environ', 'params', 'data', 'method', 'content_type'
     )
 
-    def __init__(self, db, app, environ, **args):
+    def __init__(self, db, app, environ, **params):
         self.db = db
         self.app = app
         self.environ = environ
-        self.params = args
+        self.params = params
         self.data = {}
         self.method = environ['REQUEST_METHOD']
         if self.method in ('POST', 'PATCH', 'PUT'):

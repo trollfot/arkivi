@@ -1,9 +1,16 @@
 from autoroutes import Routes
+from pydantic import BaseModel
 
+from horseman.validation import validate
 from horseman.meta import APIView, view_methods
-from horseman.response import reply
+from horseman.response import reply, json_reply
 from horseman.routing import RoutingNode, SentryNode, add_route as route
 from .request import Request
+
+
+class User(BaseModel):
+    username: str
+    password: str
 
 
 ROUTER = Routes()
@@ -11,9 +18,10 @@ ROUTER = Routes()
 
 class Backend(RoutingNode, SentryNode):
 
-    def __init__(self, routes=ROUTER, request_factory=Request):
+    def __init__(self, jwt_service, routes=ROUTER, request_factory=Request):
         self.routes = routes
         self.request_factory = request_factory
+        self.jwt_service = jwt_service
 
 
 class CORSAPIView(APIView):
@@ -28,6 +36,28 @@ class CORSAPIView(APIView):
                 "Authorization, Content-Type, X-Requested-With"),
         }
         return reply(204, headers=headers)
+
+
+@route(ROUTER, '/login')
+class Login(CORSAPIView):
+
+    def GET(self, request):
+        schema = User.schema_json(indent=2)
+        return reply(
+            body=schema, headers={'Content-Type': "application/json"})
+
+    def check_credentials(self, credentials):
+        return (credentials.username == 'admin'
+                and credentials.password == 'admin')
+
+    @validate(User)
+    def POST(self, request, credentials):
+        if not self.check_credentials(credentials):
+            return reply(403)
+
+        payload = {'user': credentials.username}
+        jwt = request.app.jwt_service.generate(payload)
+        return json_reply(body={'token': jwt})
 
 
 @route(ROUTER, '/spectacles')

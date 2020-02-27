@@ -10,6 +10,7 @@ install_requires = [
     'cromlech.jwt',
     'horseman',
     'wrapt',
+    'pydantic',
 ]
 
 test_requires = [

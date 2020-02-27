@@ -1,5 +1,5 @@
-chameleon
 wrapt
 bjoern
+rutter
 -e git+git@github.com:Treegital/horseman.git#egg=horseman
 -e .

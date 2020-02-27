@@ -5,7 +5,7 @@ from arkivi.db import Database
 from arkivi.web import Website
 from arkivi.api import Backend
 from arkivi.request import request
-from arkivi.auth import make_jwt_service, protected
+from arkivi.auth import make_jwt_service, jwt_protection
 from rutter.urlmap import URLMap
 from horseman.response import Response
 
@@ -24,13 +24,12 @@ frontend = Website(emailer, request_factory=request_factory)
 
 # API Backend
 JWTService = make_jwt_service('jwt.key')
-backend = Backend(request_factory=request_factory)
+backend = Backend(JWTService, request_factory=request_factory)
 
 # Creating the main router
 application = URLMap(not_found_app=Response.create(404))
 application['/'] = frontend
-#application['/admin'] = protected(JWTService)(backend)
-application['/admin'] = backend
+application['/admin'] = jwt_protection(backend, excludes=['/login'])
 
 # Serving the app
 bjoern.run(application, '0.0.0.0', 9999)
