@@ -5,10 +5,11 @@ from setuptools import setup, find_packages
 version = "0.1"
 
 install_requires = [
+    'cached-property',
     'chameleon',
+    'cromlech.jwt',
     'horseman',
     'wrapt',
-    'cached-property'
 ]
 
 test_requires = [

@@ -1,20 +1,48 @@
 import smtplib
+import functools
+from contextlib import contextmanager
+from collections import namedtuple
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-class SecureMailer(object):
+SMTP_CONFIG = namedtuple(
+    'SMTP', ['host', 'user', 'password', 'port', 'emitter', 'recipient'])
 
-    def __init__(self, host, username, password, port="25", debug=False):
-        self.mailer = None
-        self.host = host
-        self.port = port
+
+class SecureMailer:
+
+    def __init__(self, debug=False, **config):
+        self.config = SMTP_CONFIG(**config)
         self.debug = debug
-        self.username = username
-        self.password = password
 
-    def __enter__(self):
-        server = smtplib.SMTP(self.host, self.port)
+    @staticmethod
+    def format_email(_from, _to, subject, text, html=None):
+        msg = MIMEMultipart('alternative')
+        msg['From'] = _from
+        msg['To'] = _to
+        msg['Subject'] = subject
+        msg.set_charset('utf-8')
+
+        part1 = MIMEText(text, 'plain')
+        part1.set_charset('utf-8')
+        msg.attach(part1)
+
+        if html is not None:
+            part2 = MIMEText(html, 'html')
+            part2.set_charset('utf-8')
+            msg.attach(part2)
+
+        return msg
+
+    def email(self, subject, text, html=None):
+        return self.format_email(
+            self.config.emitter, self.config.recipient,
+            subject, text, html)
+
+    @contextmanager
+    def smtp(self):
+        server = smtplib.SMTP(self.config.host, self.config.port)
         server.set_debuglevel(self.debug)
 
         # identify ourselves, prompting server for supported features
@@ -25,28 +53,9 @@ class SecureMailer(object):
             server.starttls()
             server.ehlo() # re-identify ourselves over TLS connection
 
-        server.login(self.username, self.password)
-        self.mailer = server
-        return server.sendmail
-
-    def __exit__(self, type, value, traceback):
-        self.mailer.close()
-
-
-def make_email(emitter, recipient, subject, text, html=None):
-    msg = MIMEMultipart('alternative')
-    msg['From'] = emitter
-    msg['To'] = recipient
-    msg['Subject'] = subject
-    msg.set_charset('utf-8')
-
-    part1 = MIMEText(text, 'plain')
-    part1.set_charset('utf-8')
-    msg.attach(part1)
-
-    if html is not None:
-        part2 = MIMEText(html, 'html')
-        part2.set_charset('utf-8')
-        msg.attach(part2)
-
-    return msg
+        server.login(self.config.user, self.config.password)
+        try:
+            yield functools.partial(
+                server.sendmail, self.config.emitter, self.config.recipient)
+        finally:
+            server.close()

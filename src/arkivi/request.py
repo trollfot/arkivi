@@ -4,10 +4,11 @@ from horseman.meta import Overhead
 class Request(Overhead):
 
     __slots__ = (
-        'app', 'environ', 'params', 'data', 'method', 'content_type'
+        'app', 'db', 'environ', 'params', 'data', 'method', 'content_type'
     )
 
-    def __init__(self, app, environ, **args):
+    def __init__(self, db, app, environ, **args):
+        self.db = db
         self.app = app
         self.environ = environ
         self.params = args
@@ -21,3 +22,9 @@ class Request(Overhead):
 
     def set_data(self, data):
         self.data = data
+
+
+def request(db):
+    def factory(app, environ, **args):
+        return Request(db, app, environ, **args)
+    return factory
