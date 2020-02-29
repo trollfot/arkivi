@@ -33,3 +33,14 @@ class Database:
         if not db.hasCollection(collection):
             return db.createCollection(name=collection)
         return db.collections[collection]
+
+    def __getitem__(self, name):
+        collection = Collections(name).value
+        return db.collections[collection]
+
+    def __contains__(self, name):
+        collection = Collections(name).value
+        return self.db.hasCollection(collection)
+
+    def query(self, aql: str, *args, **kwargs):
+        return self.db.AQLQuery(aql, *args, **kwargs)

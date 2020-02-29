@@ -30,7 +30,13 @@ def jwt_protection(app, excludes=None):
 
     def check_token(environ, start_response):
         if excludes and environ['PATH_INFO'] in excludes:
+            # Excluded paths get a free pass.
             return app(environ, start_response)
+
+        if environ['REQUEST_METHOD'] == 'OPTIONS':
+            # Options should not be protected.
+            return app(environ, start_response)
+
         auth = environ.get('HTTP_AUTHORIZATION')
         if auth:
             authtype, token = auth.split(' ', 1)

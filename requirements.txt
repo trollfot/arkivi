@@ -1,5 +1,6 @@
 wrapt
 bjoern
 rutter
+-e git+git@github.com:Hydrugion/pyArango.git@a4e143e337a693eef08bb497cc4fb790aa4b9a03#egg=pyarango
 -e git+git@github.com:Treegital/horseman.git#egg=horseman
 -e .
