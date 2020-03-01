@@ -1,3 +1,4 @@
+import datetime
 from autoroutes import Routes
 from http import HTTPStatus
 from pydantic import BaseModel
@@ -21,6 +22,14 @@ class Spectacle(BaseModel):
     title: str
     summary: str=''
     presentation: str=''
+
+
+class Event(BaseModel):
+    date: datetime.date
+    place: str=''
+    hour_from: str=''
+    hour_to: str=''
+    about: str=''
 
 
 ROUTER = Routes()
@@ -155,24 +164,59 @@ class SpectacleAPI(CORSAPIView):
             return Response.create(404)
 
 
+@route(ROUTER, '/spectacles/{spectacle}/gallery')
+class GalleryAPI(CORSAPIView):
+
+    def GET(self, request):
+        return Response.create(202)
+
+    def POST(self, request):
+        # files are here
+        return Response.create(202)
+
+
 @route(ROUTER, '/spectacles/{spectacle}/agenda')
 class AgendaAPI(CORSAPIView):
 
     def GET(self, request):
-        return Response.create(200)
+        query = f"""FOR doc IN {Collections.SPECTACLES.value}
+                    FILTER doc._key == "{request.params['spectacle']}"
+                      LET eventList = doc.agenda
+                      FILTER !IS_NULL(eventList)
+                      FOR event IN eventList
+                        SORT event.date ASC
+                        RETURN event"""
+        events = request.db.query(query, rawResults=True)
+        return Response.to_json(200, list(events))
+
+    @validate(Event)
+    def POST(self, request, event):
+        spectacles = request.db.get(Collections.SPECTACLES)
+        try:
+            doc = spectacles[request.params['spectacle']]
+            if doc['agenda'] is None:
+                doc['agenda'] = [event.dict()]
+            else:
+                doc['agenda'] = doc['agenda'] + [event.dict()]
+            doc.save()
+            return Response.create(202)
+        except KeyError:
+            return Response.create(404)
 
 
 @route(ROUTER, '/spectacles/{spectacle}/agenda/{date}')
-class DateAPI(CORSAPIView):
-
-    def GET(self, request):
-        return Response.create(200)
-
-    def PUT(self, request):
-        return Response.create(200)
-
-    def PATCH(self, request):
-        return Response.create(200)
+class EventAPI(CORSAPIView):
 
     def DELETE(self, request):
-        return Response.create(200)
+        spectacles = request.db.get(Collections.SPECTACLES)
+        try:
+            doc = spectacles[request.params['spectacle']]
+            if doc['agenda'] is None:
+                return Response.create(404)
+
+            doc['agenda'] = [event for event in doc['agenda'] if
+                             event['date'] != request.params['date']]
+            doc.save()
+            return Response.create(202)
+        except KeyError:
+            return Response.create(404)
