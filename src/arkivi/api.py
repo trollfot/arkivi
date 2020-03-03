@@ -194,7 +194,17 @@ class GalleryAPI(CORSAPIView):
 
 @route(ROUTER, '/spectacles/{spectacle}/gallery/{filename}')
 class GalleryFileAPI(CORSAPIView):
-    pass
+
+    def GET(self, request):
+        fpath = request.app.storage.get_file(
+            request.params['filename'],
+            f"spectacles/{request.params['spectacle']}/gallery")
+        if fpath is None:
+            return Response.create(404)
+        iterator = request.app.storage.file_iterator(fpath)
+        return Response.create(200, body=iterator, headers={
+            'Content-Type': 'application/octet-stream'
+        })
 
 
 @route(ROUTER, '/spectacles/{spectacle}/agenda')

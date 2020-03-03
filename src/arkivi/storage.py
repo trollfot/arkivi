@@ -19,8 +19,23 @@ class Storage:
             return True
         return False
 
+    @staticmethod
+    def file_iterator(path: Path, chunk=8192):
+        with path.open('rb') as reader:
+            while True:
+                data = reader.read(chunk)
+                if not data:
+                    break
+                yield data
+
     def list(self, folder: Path) -> Iterable[Path]:
         jailed = (self.root / folder).resolve()
         if not jailed.exists():
             return []
         return (path for path in jailed.iterdir() if path.is_file())
+
+    def get_file(self, name: str, folder: Path) -> Iterable[bytes]:
+        jailed = (self.root / folder / name).resolve()
+        if not jailed.exists():
+            return None
+        return jailed
