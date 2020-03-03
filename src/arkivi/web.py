@@ -17,9 +17,12 @@ ROUTER = Routes()
 
 class Website(RoutingNode, SentryNode):
 
-    def __init__(self, emailer, routes=ROUTER, request_factory=Request):
-        self.routes = routes
+    __slots__ = ('routes', 'emailer', 'storage', 'request_factory')
+
+    def __init__(self, emailer, storage, request_factory=Request):
+        self.routes = ROUTER
         self.emailer = emailer
+        self.storage = storage
         self.request_factory = request_factory
 
 

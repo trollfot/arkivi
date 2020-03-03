@@ -1,4 +1,5 @@
 import datetime
+from pathlib import Path
 from autoroutes import Routes
 from http import HTTPStatus
 from pydantic import BaseModel
@@ -7,6 +8,7 @@ from horseman.meta import APIView, view_methods
 from horseman.response import Response as BaseResponse, json, Headers
 from horseman.routing import RoutingNode, SentryNode, add_route as route
 from horseman.http import HTTPCode
+from horseman.parsing import parse
 
 from .db import Collections
 from .request import Request
@@ -64,8 +66,11 @@ class Response(BaseResponse):
 
 class Backend(RoutingNode, SentryNode):
 
-    def __init__(self, jwt_service, routes=ROUTER, request_factory=Request):
-        self.routes = routes
+    __slots__ = ('routes', 'jwt_service', 'storage', 'request_factory')
+
+    def __init__(self, jwt_service, storage, request_factory=Request):
+        self.routes = ROUTER
+        self.storage = storage
         self.request_factory = request_factory
         self.jwt_service = jwt_service
 
@@ -168,11 +173,28 @@ class SpectacleAPI(CORSAPIView):
 class GalleryAPI(CORSAPIView):
 
     def GET(self, request):
-        return Response.create(202)
+        files = [{
+            'name': path.name,
+            'size': path.stat().st_size
+        } for path in request.app.storage.list(
+            f"spectacles/{request.params['spectacle']}/gallery")]
+        return Response.to_json(200, files)
 
     def POST(self, request):
         # files are here
-        return Response.create(202)
+        form, files = parse(
+            request.environ['wsgi.input'], request.content_type)
+        if request.app.storage.persist(
+                form['name'][0],
+                files['file'][0],
+                Path(f"spectacles/{request.params['spectacle']}/gallery")):
+            return Response.create(202)
+        return Response.create(400)
+
+
+@route(ROUTER, '/spectacles/{spectacle}/gallery/{filename}')
+class GalleryFileAPI(CORSAPIView):
+    pass
 
 
 @route(ROUTER, '/spectacles/{spectacle}/agenda')
