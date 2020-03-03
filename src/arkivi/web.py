@@ -1,6 +1,7 @@
 """
 ARKIVI Website
 """
+from pyArango import theExceptions
 from autoroutes import Routes
 
 from horseman.meta import APIView
@@ -35,10 +36,14 @@ def index(request):
 @route(ROUTER, '/spectacles', methods=['GET'])
 @template_endpoint('spectacles.pt')
 def spectacles(request):
-    spectales = request.db.get(Collections.SPECTACLES)
-    return {
-        'spectacles': [spectacle for spectacle in spectales.fetchAll()]
-    }
+    query = f"""FOR spectacle IN {Collections.SPECTACLES.value}
+                  RETURN {{
+                     id: spectacle._key,
+                     title: spectacle.title,
+                     description: spectacle.description
+                  }}"""
+    spectacles = request.db.query(query, rawResults=True)
+    return { 'spectacles': list(spectacles) }
 
 
 @route(ROUTER, '/tour', methods=['GET'])
@@ -56,7 +61,13 @@ def equipe(request):
 @route(ROUTER, '/spectacles/{spectacle}', methods=['GET'])
 @template_endpoint('spectacle.pt')
 def spectacle(request):
-    return {'spectacle': request.params['spectacle']}
+    spectacles = request.db.get(Collections.SPECTACLES)
+    try:
+        return {
+            'spectacle': spectacles[request.params['spectacle']]
+        }
+    except theExceptions.DocumentNotFoundError:
+        raise KeyError
 
 
 @route(ROUTER, '/contact')

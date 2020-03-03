@@ -22,6 +22,7 @@ class User(BaseModel):
 class Spectacle(BaseModel):
     id: str
     title: str
+    description: str=''
     summary: str=''
     presentation: str=''
 
@@ -94,7 +95,7 @@ class Login(CORSAPIView):
 
     def GET(self, request):
         schema = User.schema_json(indent=2)
-        return Response.from_json(200, body=schema)
+        return Response.from_json(200, schema)
 
     def check_credentials(self, credentials):
         return (credentials.username == 'admin'
@@ -205,6 +206,16 @@ class GalleryFileAPI(CORSAPIView):
         return Response.create(200, body=iterator, headers={
             'Content-Type': 'application/octet-stream'
         })
+
+    def DELETE(self, request):
+        fpath = request.app.storage.get_file(
+            request.params['filename'],
+            f"spectacles/{request.params['spectacle']}/gallery")
+        if fpath is None:
+            return Response.create(404)
+
+        fpath.unlink()
+        return Response.create(202)
 
 
 @route(ROUTER, '/spectacles/{spectacle}/agenda')

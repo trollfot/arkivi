@@ -1,5 +1,6 @@
 import bjoern
 import configparser
+from pathlib import Path
 from arkivi.emailer import SecureMailer
 from arkivi.db import Database
 from arkivi.web import Website
@@ -11,8 +12,10 @@ from rutter.urlmap import URLMap
 from horseman.response import Response
 
 
+current = Path(__file__).parent
+
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(current / 'config.ini')
 
 # Storage config
 storage = Storage(**dict(config.items('storage')))
@@ -26,7 +29,7 @@ emailer = SecureMailer(**dict(config.items('smtp')))
 frontend = Website(emailer, storage, request_factory=request_factory)
 
 # API Backend
-JWTService = make_jwt_service('jwt.key')
+JWTService = make_jwt_service(current / 'jwt.key')
 backend = Backend(JWTService, storage, request_factory=request_factory)
 
 # Creating the main router
@@ -35,4 +38,4 @@ application['/'] = frontend
 application['/admin'] = jwt_protection(backend, excludes=['/login'])
 
 # Serving the app
-bjoern.run(application, '0.0.0.0', 9999)
+bjoern.run(application, 'unix:/tmp/bjoern.sock')

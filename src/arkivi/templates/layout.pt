@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="http://trollfot.org/arkivi/arkivi.css" />
+    <link rel="stylesheet"
+          href="http://files.arkivi.fr/assets/arkivi.css" />
     <title>Compagnie Arkivi</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
   </head>
@@ -11,7 +12,7 @@
 
       <header>
         <h1 id="arkivi-title">Compagnie ARKIVI</h1>
-        <img src="http://trollfot.org/arkivi/logo.png"
+        <img src="http://files.arkivi.fr/assets/logo.png"
              alt="Arkivi" title="Compagnie Arkivi" />
       </header>
 

@@ -1,149 +1,28 @@
 <tal:spectacle>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="/">ARKIVI</a></li>
+      <li><a href="/spectacles">Spectacles</a></li>
+      <li><a tal:content="spectacle.title" /></li>
+    </ul>
+  </nav>
 
   <article class="spectacle">
     <header>
-      <h1 class="main-title" tal:content="spectacle" />
-      <img src="http://trollfot.org/arkivi/slides/poka_band.jpg" />
+      <h1 class="main-title" tal:content="spectacle.title" />
+      <img tal:attributes="src 'http://files.arkivi.fr/spectacles/' + spectacle.id + '/gallery/band.jpg'" />
     </header>
 
     <section class="about">
-      <div class="synopsis">
+      <div class="synopsis" tal:condition="spectacle.summary">
         <h2>Synopsis</h2>
-
-        <p>Un décor de verdure, du linge étendu qui sèche sur un fil.
-        Poka s'exprime à sa façon, dans un langage étrange, inconnu
-        mais harmonieux. A la recherche d’un morceau de tissu pour
-        compléter son doudou, il est arrivé par hasard sur ce
-        lieu.</p>
-
-        <p>Poka fouille et farfouille.
-        Il cherche et découvre un panier et des fils sur lesquels
-        sont suspendus du linge.</p>
-
-        <p>Poka s'amuse avec les fils et ce qu’il trouve dans cet
-        étrange clairière. Intrigué il s'approche des vêtements et
-        passe sa tête dans ceux ci.</p>
-
-        <p>Ô surprise Poka se met à parler et même à chanter ! Il
-        alterne comptines, mots ... sons graves, quand la tête est
-        dans la chemise, sons aigus, quand elle est dans la robe.</p>
-
-        <p>Poka joue, avec les sons, avec les mots....avec les
-        vêtements qui sèchent. Les voix graves et aiguës vont tour à
-        tour s'essayer dans les différents vêtements, animés par le
-        personnage, ils prennent vie et créent un univers où tout
-        est possible.</p>
+        <div tal:content="structure spectacle.summary" />
       </div>
 
-      <div class="people">
-        <dl>
-          <dt>co-production</dt>
-          <dd>Truc et Machin</dd>
-
-          <dt>Auteur et metteur en scène</dt>
-          <dd>Albert Jean-Paul</dd>
-
-          <dt>Comédiens</dt>
-          <dd>Jean, Paul, Pierre, Ernest, Hector,
-          Albert, Laure, Ingrid et Pascale</dd>
-        </dl>
+      <div class="synopsis" tal:condition="spectacle.about">
+        <h2>A propos</h2>
+        <div tal:content="structure spectacle.about" />
       </div>
-    </section>
-
-    <section>
-      <h3>Extrait</h3>
-      <details>
-        <summary>Représentation filmée un jour, quelque part</summary>
-        <iframe width="560" height="315"
-                src="https://www.youtube.com/embed/Cni0UBvp6jM"
-                frameborder="0" allow="autoplay; encrypted-media;
-                                       gyroscope;
-                                       picture-in-picture"
-                allowfullscreen>
-        </iframe>
-      </details>
-    </section>
-  </article>
-
-  <article class="spectacle-gallery">
-    <header>
-      <h2>Galerie</h2>
-    </header>
-    <aside id="modal">
-      <div class="content">
-        <span class="close" onclick="close_modal()">x</span>
-        <img />
-      </div>
-    </aside>
-    <section class="thumbnails">
-      <a href="http://trollfot.org/arkivi/slides/poka/antelope.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/antelope.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/bio.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/bio.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/butterfly.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/butterfly.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/castle.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/castle.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/coffee.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/coffee.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/ice-cream.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/ice-cream.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/lighthouse.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/lighthouse.webp" />
-      </a>
-      <a href="http://trollfot.org/arkivi/slides/poka/yoga.webp"
-         onclick="return showModal(this);">
-        <img src="http://trollfot.org/arkivi/slides/poka/yoga.webp" />
-      </a>
-    </section>
-    <script>
-      var modal = document.getElementById('modal');
-      var img = modal.getElementsByTagName('img')[0];
-
-      function showModal(el) {
-          modal.style.display = "block";
-          var img = modal.getElementsByTagName('img')[0];
-          img.src = el.href;
-          return false;
-      }
-
-      function close_modal() {
-          modal.style.display = "none";
-          img.src = null;
-      }
-
-      window.onclick = function(event) {
-          if (event.target == modal) {
-              modal.style.display = "none";
-          }
-      }
-    </script>
-  </article>
-
-  <article class="cards">
-    <section>
-      <h3>Articles de presse</h3>
-      <p>
-        truc
-      </p>
-    </section>
-
-    <section>
-      <h3>Dossier à télécharger</h3>
-      <a href="">Lien de fichier</a>
     </section>
   </article>
 

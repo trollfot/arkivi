@@ -34,16 +34,22 @@ def template_endpoint(template_name: str, layout=layout):
     template = TEMPLATES[template_name]
 
     @wrapt.decorator
-    def authenticator(endpoint, instance, args, kwargs):
+    def render(endpoint, instance, args, kwargs):
+        try:
+            local_namespace = endpoint(*args, **kwargs)
+        except KeyError:
+            return reply(404)
+
         request = args[0]
-        local_namespace = endpoint(*args, **kwargs)
         content = template.render(**local_namespace)
         if layout is not None:
             body = layout.render(
                 content, path=request.environ['PATH_INFO'])
             return reply(
-                body=body, headers={'Content-Type': 'text/html; charset=utf-8'})
+                body=body,
+                headers={'Content-Type': 'text/html; charset=utf-8'})
         return reply(
-            body=content, headers={'Content-Type': 'text/html; charset=utf-8'})
+            body=content,
+            headers={'Content-Type': 'text/html; charset=utf-8'})
 
-    return authenticator
+    return render
